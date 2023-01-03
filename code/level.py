@@ -1,5 +1,11 @@
 import pygame
+
+from random import choice
 from player import Player
+from tile import Tile
+from weapon import Weapon
+from support import *
+from settings import *
 
 
 class Level:
@@ -9,10 +15,48 @@ class Level:
         self.obstacle_sprites = pygame.sprite.Group()
         self.visible_sprites = YSortCameraGroup()
 
+        # attack sprites
+        self.current_attack = None
+
         self.create_map()
 
     def create_map(self):
-        self.player = Player((128, 128), [self.visible_sprites], self.obstacle_sprites)
+        layouts = {
+            'boundary': import_csv_layout('../graphics/map/map_floor_blocks.csv'),
+            'grass': import_csv_layout('../graphics/map/map_grass.csv'),
+            'trees': import_csv_layout('../graphics/map/map_trees.csv')
+        }
+
+        graphics = {
+            'grass': import_folder('../graphics/grass'),
+            'trees': import_folder('../graphics/trees')
+        }
+
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+                        if style == 'boundary':
+                            Tile((x, y), [self.obstacle_sprites], 'invisible')
+                        elif style == 'grass':
+                            grass_image = choice(graphics['grass'])
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'grass', grass_image)
+                        elif style == 'trees':
+                            surf = graphics['trees'][int(col)]
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
+
+        self.player = Player((2000, 1500), [self.visible_sprites], self.obstacle_sprites,
+                             self.create_attack, self.destroy_attack)
+
+    def create_attack(self):
+        self.current_attack = Weapon(self.player, [self.visible_sprites])
+
+    def destroy_attack(self):
+        if self.current_attack:
+            self.current_attack.kill()
+        self.current_attack = None
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)

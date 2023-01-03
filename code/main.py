@@ -8,7 +8,7 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        self.WIDTH, self.HEIGHT = pygame.display.Info().current_w, pygame.display.Info().current_h - 60
+        self.WIDTH, self.HEIGHT = pygame.display.Info().current_w, pygame.display.Info().current_h
 
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         self.clock = pygame.time.Clock()
@@ -22,6 +22,8 @@ class Game:
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     running = False
             self.screen.fill((0, 0, 0))
             self.level.run()
