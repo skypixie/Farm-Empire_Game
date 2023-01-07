@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.animation_speed = 0.15
 
         self.direction = pygame.math.Vector2()
-        self.speed = 5
+
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
@@ -30,6 +30,9 @@ class Player(pygame.sprite.Sprite):
         self.weapon_switch_time = None
         self.switch_duration_cooldown = 200
 
+        self.stats = {'health': 100, 'mana': 100, 'speed': 5}
+        self.current_health = self.stats['health']
+        self.current_mana = self.stats['mana']
 
         self.obstacle_sprites = obstacle_sprites
 
@@ -95,7 +98,7 @@ class Player(pygame.sprite.Sprite):
                     self.weapon_index += 1
                 else:
                     self.weapon_index = 0
-                print('weapon index:', self.weapon_index)
+
                 self.weapon = list(weapon_data.keys())[self.weapon_index]
 
     def get_status(self):
@@ -156,7 +159,7 @@ class Player(pygame.sprite.Sprite):
         self.cooldowns()
         self.get_status()
         self.animate()
-        self.move(self.speed)
+        self.move(self.stats['speed'])
 
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
