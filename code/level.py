@@ -15,6 +15,7 @@ class Level:
 
         self.obstacle_sprites = pygame.sprite.Group()
         self.visible_sprites = YSortCameraGroup()
+        self.fields_coords = []
 
         # attack sprites
         self.current_attack = None
@@ -27,12 +28,14 @@ class Level:
         layouts = {
             'boundary': import_csv_layout('../graphics/map/map_floor_blocks.csv'),
             'grass': import_csv_layout('../graphics/map/map_grass.csv'),
-            'trees': import_csv_layout('../graphics/map/map_trees.csv')
+            'trees': import_csv_layout('../graphics/map/map_trees.csv'),
+            'field_id': import_csv_layout('../graphics/map/map_field_id.csv')
         }
 
         graphics = {
             'grass': import_folder('../graphics/grass'),
-            'trees': import_folder('../graphics/trees')
+            'trees': import_folder('../graphics/trees'),
+            '?': import_folder('../graphics/question_mark')
         }
 
         for style, layout in layouts.items():
@@ -49,6 +52,8 @@ class Level:
                         elif style == 'trees':
                             surf = graphics['trees'][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
+                        elif style == 'field_id':
+                            self.fields_coords.append((x, y))
 
         self.player = Player((2000, 1500), [self.visible_sprites], self.obstacle_sprites,
                              self.create_attack, self.destroy_attack, self.create_magic)
@@ -64,9 +69,16 @@ class Level:
             self.current_attack.kill()
         self.current_attack = None
 
+    def player_in_field(self):
+        for field_center in self.fields_coords:
+            if self.player.rect.colliderect(field_center[0] - TILESIZE, field_center[1] - TILESIZE,
+                                            TILESIZE * 3, TILESIZE * 3):
+                print('collides')
+
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        self.player_in_field()
         self.ui.display(self.player)
 
 

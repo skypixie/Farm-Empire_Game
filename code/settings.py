@@ -15,6 +15,11 @@ magic_data = {
     'fire': {'cooldown': 100, 'strength': 100, 'cost': 30, 'graphic': '../graphics/particles/flame/fire.png'}
 }
 
+# враги
+monster_data = {
+    'frog': {'health'}
+}
+
 # stats background color
 STATS_BG_COLOR = (0, 0, 0)
 
