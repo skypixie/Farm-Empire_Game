@@ -23,3 +23,8 @@ def import_folder(path):
             surface_list.append(image_surf)
 
     return surface_list
+
+
+def get_screen_size():
+    w, h = pygame.display.Info().current_w, pygame.display.Info().current_h
+    return w, h

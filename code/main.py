@@ -2,13 +2,14 @@ import pygame
 
 from level import Level
 from settings import *
+from support import get_screen_size
 
 
 class Game:
     def __init__(self):
         pygame.init()
 
-        self.WIDTH, self.HEIGHT = pygame.display.Info().current_w, pygame.display.Info().current_h
+        self.WIDTH, self.HEIGHT = get_screen_size()
 
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         self.clock = pygame.time.Clock()
