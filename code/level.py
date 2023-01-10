@@ -29,7 +29,8 @@ class Level:
             'boundary': import_csv_layout('../graphics/map/map_floor_blocks.csv'),
             'grass': import_csv_layout('../graphics/map/map_grass.csv'),
             'trees': import_csv_layout('../graphics/map/map_trees.csv'),
-            'field_id': import_csv_layout('../graphics/map/map_field_id.csv')
+            'field_id': import_csv_layout('../graphics/map/map_field_id.csv'),
+            'entities': import_csv_layout('../graphics/map/map_entities.csv') # TODO
         }
 
         graphics = {

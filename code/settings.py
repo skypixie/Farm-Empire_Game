@@ -17,7 +17,9 @@ magic_data = {
 
 # враги
 monster_data = {
-    'frog': {'health'}
+    'frog': {'health': 200, 'damage': 30, 'attack_type': 'slash', 'attack_sound': '../audio/attack/Hit.wav', 'speed': 3, 'resistance': 3, 'attack_radius': TILESIZE * 2, 'notice_radius': TILESIZE * 4},
+    'raccoon': {'health': 300, 'damage': 40, 'attack_type': 'claw', 'attack_sound': '../audio/attack/Explosion.wav', 'speed': 3, 'resistance': 3, 'attack_radius': TILESIZE * 2, 'notice_radius': TILESIZE * 4},
+    'spirit': {'health': 150, 'damage': 30, 'attack_type': 'thunder', 'attack_sound': '../audio/attack/Explosion4.wav', 'speed': 3, 'resistance': 3, 'attack_radius': TILESIZE * 2, 'notice_radius': TILESIZE * 4}
 }
 
 # stats background color
