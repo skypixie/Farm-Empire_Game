@@ -22,6 +22,9 @@ monster_data = {
     'spirit': {'health': 150, 'damage': 30, 'attack_type': 'thunder', 'attack_sound': '../audio/attack/Explosion4.wav', 'speed': 3, 'resistance': 3, 'attack_radius': TILESIZE * 2, 'notice_radius': TILESIZE * 4}
 }
 
+# ключи для id букв-обозначений полей
+FIELDS_IDS = {52: 1, 60: 2, 68: 3, 76: 4}
+
 # stats background color
 STATS_BG_COLOR = (0, 0, 0)
 
@@ -49,3 +52,6 @@ WEAPON_BOX_SIZE = (TILESIZE + 10, TILESIZE + 10)
 # UI MAGIC COORDINATES
 MAGIC_BOX_POS = (TILESIZE // 4, WEAPON_BOX_POS[1] + WEAPON_BOX_SIZE[1] + TILESIZE // 5)
 MAGIC_BOX_SIZE = (TILESIZE + 10, TILESIZE + 10)
+
+# FIELD ACTIVE ZONE
+FIELD_ACTIVE_ZONE = TILESIZE * 3

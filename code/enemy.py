@@ -1,13 +1,15 @@
 import pygame
 
-from settings import *
 from entity import Entity
-
+from support import import_folder
+from settings import *
 
 class Enemy(Entity):
-    def __init__(self, name, pos, groups):
+    def __init__(self, groups, name, pos, ):
         super().__init__(groups)
-        self.sprite_type = 'enemy'
+        self.set_images(name)
 
-        self.image = pygame.Surface((64, 64))
-        self.rect = self.image.get_rect(topleft=pos)
+    def set_images(self, name):
+        self.animations = {'idle': [], 'attack': [], 'move': []}
+        for folder_name in self.animations:
+            self.animations[folder_name] = import_folder(f'../graphics/characters/monsters/{name}/{folder_name}')

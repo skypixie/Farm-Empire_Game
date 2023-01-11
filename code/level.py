@@ -15,7 +15,7 @@ class Level:
 
         self.obstacle_sprites = pygame.sprite.Group()
         self.visible_sprites = YSortCameraGroup()
-        self.fields_coords = []
+        self.fields = {}
 
         # attack sprites
         self.current_attack = None
@@ -24,13 +24,14 @@ class Level:
 
         self.ui = UI()
 
+        self.fighting_enemies = pygame.sprite.Group()
+
     def create_map(self):
         layouts = {
             'boundary': import_csv_layout('../graphics/map/map_floor_blocks.csv'),
             'grass': import_csv_layout('../graphics/map/map_grass.csv'),
             'trees': import_csv_layout('../graphics/map/map_trees.csv'),
-            'field_id': import_csv_layout('../graphics/map/map_field_id.csv'),
-            'entities': import_csv_layout('../graphics/map/map_entities.csv') # TODO
+            'field_id': import_csv_layout('../graphics/map/map_field_id.csv')
         }
 
         graphics = {
@@ -38,6 +39,13 @@ class Level:
             'trees': import_folder('../graphics/trees'),
             '?': import_folder('../graphics/question_mark')
         }
+
+        player_pos = ()
+        for row_index, row in enumerate(import_csv_layout('../graphics/map/map_player.csv')):
+            for col_index, col in enumerate(row):
+                if col != '-1':
+                    x, y = col_index * TILESIZE, row_index * TILESIZE
+                    player_pos = (x, y)
 
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
@@ -54,10 +62,10 @@ class Level:
                             surf = graphics['trees'][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
                         elif style == 'field_id':
-                            self.fields_coords.append((x, y))
+                            self.fields[FIELDS_IDS[int(col)]] = (x, y)
 
-        self.player = Player((2000, 1500), [self.visible_sprites], self.obstacle_sprites,
-                             self.create_attack, self.destroy_attack, self.create_magic)
+        self.player = Player(player_pos, [self.visible_sprites], self.obstacle_sprites,
+                             self.create_attack, self.destroy_attack, self.create_magic, self.player_in_field)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visible_sprites])
@@ -71,15 +79,34 @@ class Level:
         self.current_attack = None
 
     def player_in_field(self):
-        for field_center in self.fields_coords:
+        for field_center in list(self.fields.values()):
             if self.player.rect.colliderect(field_center[0] - TILESIZE, field_center[1] - TILESIZE,
                                             TILESIZE * 3, TILESIZE * 3):
-                print('collides')
+                if not self.player.battle_started:
+                    self.start_battle(field_center)
+
+    def start_battle(self, field_center):
+        self.player.battle_started = True
+        # вычислить номер поля, с которым взаимодействовал игрок
+        field = None
+        for key in self.fields:
+            if self.fields[key] == field_center:
+                field = key
+                break
+        # создать врагов на нужном поле
+        self.create_enemies(field)
+
+    def create_enemies(self, level):
+        for row_index, row in enumerate(import_csv_layout(f'../graphics/map/map_level_{level}_entities.csv')):
+            for col_index, col in enumerate(row):
+                pass
+
+    def battle_is_over(self):
+        pass
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        self.player_in_field()
         self.ui.display(self.player)
 
 
