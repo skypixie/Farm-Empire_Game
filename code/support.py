@@ -28,3 +28,11 @@ def import_folder(path):
 def get_screen_size():
     w, h = pygame.display.Info().current_w, pygame.display.Info().current_h
     return w, h
+
+def reversed_dict(d):
+    res = dict()
+    keys = list(d.keys())
+    values = list(d.values())
+    for i in range(len(values)):
+        res[values[i]] = keys[i]
+    return res

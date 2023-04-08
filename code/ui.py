@@ -1,6 +1,6 @@
 import pygame
 
-from settings import *
+from import_settings import *
 
 class UI:
     def __init__(self):
@@ -44,4 +44,17 @@ class UI:
                       self.mana_rect, MP_COLOR)
 
         self.show_item(self.weapon_paths[player.weapon_index], *WEAPON_BOX_POS, *WEAPON_BOX_SIZE)
+        self.display_surface.blit(pygame.image.load(f'../graphics/hud/Tab{graphics_ind}.png'),
+                                                    (WEAPON_BOX_POS[0] + WEAPON_BOX_SIZE[0],
+                                                    WEAPON_BOX_POS[1]))
+        
         self.show_item(self.magic_paths[player.magic_index], *MAGIC_BOX_POS, *MAGIC_BOX_SIZE)
+        self.display_surface.blit(pygame.image.load(f'../graphics/hud/CapsLock{graphics_ind}.png'),
+                                  (MAGIC_BOX_POS[0] + MAGIC_BOX_SIZE[0],
+                                  MAGIC_BOX_POS[1]))
+    
+    def display_start_battle(self):
+        self.show_item(f'../graphics/hud/start_battle{graphics_ind}.png',
+                       self.display_surface.get_width() // 2 - TILESIZE,
+                       self.display_surface.get_height() // 2 - TILESIZE * 2,
+                       TILESIZE * 2, TILESIZE + 30)
