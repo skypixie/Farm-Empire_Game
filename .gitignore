@@ -1,1 +1,4 @@
 __pycache__
+.venv/
+.env
+code/database/progress_db.sqlite3
